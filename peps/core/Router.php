@@ -32,7 +32,7 @@ final class Router
 	public static function route(): void
 	{
 		// Récupérer le verbe HTTP et l'URI de la requête client.
-        $verb = filter_input(INPUT_SERVER, 'REQUEST_METHOD', FILTER_SANITIZE_FULL_SPECIAL_CHARS )
+        $verb = filter_input(INPUT_SERVER, 'REQUEST_METHOD', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) ?: filter_var($_SERVER['REQUEST_METHOD'],FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 
 		// Si pas de verbe ou d'URI, rendre la vue 404.
