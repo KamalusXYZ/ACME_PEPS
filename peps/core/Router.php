@@ -33,31 +33,56 @@ final class Router
 	{
 		// Récupérer le verbe HTTP et l'URI de la requête client.
         $verb = filter_input(INPUT_SERVER, 'REQUEST_METHOD', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) ?: filter_var($_SERVER['REQUEST_METHOD'],FILTER_SANITIZE_FULL_SPECIAL_CHARS );
-
+        $uri = filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_FULL_SPECIAL_CHARS ) ?: filter_var($_SERVER['REQUEST_URI'],FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 		// Si pas de verbe ou d'URI, rendre la vue 404.
 
+        if(!$verb | !$uri){
+            self::render('error404.php');
+        }
+
 		// Charger la table de routage JSON.
+        //TODO : constante ROUTE_FILE et déclecher une exeption si $routes null
+        $routes = json_decode(file_get_contents('cfg/routes.json'));
+
 
 		// Parcourir la table de routage.
+        foreach ($routes as $route){
+
 			// Utiliser l'expression régulière de l'URI avec un slash final optionnel.
+            // Delimiteur @ au lieu de /
+            $regexp = "@^{$route->uri}/?$@";
 
 			// Si une route correspondante est trouvée...
 
+            if(!strcasecmp($route->verb, $verb) && preg_match($regexp, $uri, $matches)) {
+
 				// Supprimer le premier élément du tableau.
+                array_shift($matches);
 
 				// Si paramètres, utiliser les noms fournis (si disponibles) pour obtenir un tableau associatif, sinon un tableau indicé.
+                 
+                if(($assocParams = $matches) && !empty($route->params) && count($matches) === count($route->params))
 
+                    @$assocParams = array_combine($route->params, $matches);
 				// Séparer le nom du contrôleur du nom de la méthode.
+
+                [$controller ,$method] = explode('.', $route->method);
 
 				// Préfixer le nom du contrôleur avec son namespace (pas de "use").
 
-				// Invoquer la méthode du contrôleur.
+                $controller = 'controllers\\'.$controller;
+                //TODO: constante CONTROLLERS_NAMESPACE
 
-			}
-		}
+				// Invoquer la méthode du contrôleur en lui passant le tableau de paramètres.
+                $controller::$method($assocParams);
+                return;
+            }
+        }
+
+
 		// Si aucune route trouvée, rendre la vue 404.
-
+            self::render('error404.php');
 	}
 
 	/**
@@ -68,6 +93,9 @@ final class Router
 	 */
 	public static function render(string $view, array $params = []): void
 	{
+        //temp
+        exit("render: {$view}");
+
 		// Transformer chaque clé en variables.
 
 		// Insérer la vue.
