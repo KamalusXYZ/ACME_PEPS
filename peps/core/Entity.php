@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace classes;
+namespace peps\core;
 
 use Error;
 
@@ -12,23 +12,21 @@ use Error;
 class Entity
 {
     /**
-     *Invoque la méthode $this->{ucfirst($name)} () si existante et retourne son resultat.
-     * Sinon retourne null.
+     * Invoque la méthode $this->get{ucfirst($name)}() si existante et retourne son résultat.
+     * Sinon, retourne null.
      *
-     * @param string $property Nom de la proriété inaccessible ou inexistante.
-     * @return mixed Retour de la methode correspondante de $this.
+     * @param string $name Nom de la propriété inaccessible ou inexistante.
+     * @return mixed Retour de la méthode correspondante de $this.
      */
-    public function __get(string $property): mixed
+    public function __get(string $name): mixed
     {
-
-        $method = "get" . ucfirst($property);
-
+        // Construire le nom de la méthode à invoquer.
+        $methodName = 'get' . ucfirst($name);
+        // Tenter de l'invoquer.
         try {
-            return $this->$method();
+            return $this->$methodName();
         } catch (Error $e) {
             return null;
         }
     }
-
-
 }

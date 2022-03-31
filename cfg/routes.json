@@ -27,7 +27,7 @@
   },
   {
     "verb": "GET",
-    "uri": "/product/delete/([1-9][0-9]*)/(all | img)",
+    "uri": "/product/delete/([1-9][0-9]*)/(all|img)",
     "method": "ProductController.delete",
     "params": [
       "idProduct",
@@ -63,7 +63,7 @@
   {
     "verb": "POST",
     "uri": "/user/login",
-    "method": "UserController.signin"
+    "method": "UserController.login"
   },
   {
     "verb": "GET",

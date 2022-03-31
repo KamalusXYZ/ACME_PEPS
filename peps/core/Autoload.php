@@ -27,19 +27,16 @@ final class Autoload
      */
     public static function init(): void
     {
-        // Récupération du xxx
+        // Récupération du chemin absolu du contrôleur frontal (index.php). Double tentative nécessaire pour fonctionnement sur tous serveurs.
         $scriptFilename = filter_input(INPUT_SERVER, 'SCRIPT_FILENAME', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?: filter_var($_SERVER['SCRIPT_FILENAME'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        //var_dump($scriptFilename);
+        // Si introuvable, déclencher une exception.
         if (!$scriptFilename)
             throw new Exception("Server variable SCRIPT_FILENAME undefined.");
+        // Définir le chemin absolu du répertoire racine de l'application en soustrayant les 9 derniers caractères (index.php).
         $path = mb_substr($scriptFilename, 0, mb_strlen($scriptFilename) - 9);
         //var_dump($path);
         // Inscrire la fonction d'autolad dans la pile d'autoload.
-        spl_autoload_register(function ($className) {
-            global $path;
-            //var_dump($className);
-            $classPath = strtr($path . strtr($className, '\\', DIRECTORY_SEPARATOR), DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR) . '.php';
-            //var_dump($classPath);
-            @include $classPath;
-        });
+        spl_autoload_register(fn ($className) => @include strtr($path . strtr($className, '\\', DIRECTORY_SEPARATOR), DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR) . '.php');
     }
 }
