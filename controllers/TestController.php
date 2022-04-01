@@ -2,35 +2,39 @@
 
 declare(strict_types=1);
 
-
 namespace controllers;
+
+use Exception;
+use peps\core\DBAL;
+use peps\core\Router;
+
 /**
- *
- *Classe final 100% statique de test
+ * Classe 100% statique de test.
  */
 final class TestController
 {
-    /*
+    /**
      * Constructeur privé.
      */
-    public function __construct()
+    private function __construct()
     {
     }
 
     /**
      * Méthode de test.
      *
-     * GET / /test//{id}
+     * GET /test/{id}
      *
-     * @param array $params Tableau associatif des parametres.
+     * @param array $params Tableau associatif des paramètres.
      * @return void
-     *
      */
-    public static function test(array $params): void{
+    public static function test(array $params):void {
 
-        exit("id = {$params['id']}");
+        $q = "SELECT * FROM product";
+
+            var_dump(DBAL::get()->xeq($q)->findAll('Productsss'));
+
 
 
     }
-
 }
