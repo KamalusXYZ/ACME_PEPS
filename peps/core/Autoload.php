@@ -23,7 +23,7 @@ final class Autoload
      * DOIT être appelée depuis le contrôleur frontal EN TOUT PREMIER.
      * Utilisation de @ devant include pour bypasser les chemins virtuels d'éventuels archives PHAR (PHPUnit...).
      *
-     * @throws Exception Si variable serveur SCRIPT_FILENAME indéfinie.
+     * @throws AutoloadException Si variable serveur SCRIPT_FILENAME indéfinie.
      */
     public static function init(): void
     {
@@ -32,11 +32,11 @@ final class Autoload
         //var_dump($scriptFilename);
         // Si introuvable, déclencher une exception.
         if (!$scriptFilename)
-            throw new Exception("Server variable SCRIPT_FILENAME undefined.");
+            throw new AutoloadException(AutoloadException::SCRIPT_FILENAME_UNDEFINED);
         // Définir le chemin absolu du répertoire racine de l'application en soustrayant les 9 derniers caractères (index.php).
         $path = mb_substr($scriptFilename, 0, mb_strlen($scriptFilename) - 9);
         //var_dump($path);
         // Inscrire la fonction d'autolad dans la pile d'autoload.
-        spl_autoload_register(fn ($className) => @include strtr($path . strtr($className, '\\', DIRECTORY_SEPARATOR), DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR) . '.php');
+        spl_autoload_register(fn(string $className): mixed => @include strtr($path . strtr($className, '\\', DIRECTORY_SEPARATOR), DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR) . '.php');
     }
 }

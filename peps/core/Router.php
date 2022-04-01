@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace peps\core;
 
+use Error;
 use Exception;
 
 /**
@@ -31,7 +32,7 @@ final class Router
      * Routage initial.
      * Analyse la requête du client, détermine la route et invoque la méthode appropriée du contrôleur approprié.
      *
-     * @throws Exception Si fichier des routes introuvable ou invalide.
+     * @throws RouterException Si fichier des routes introuvable ou invalide, ou si la méthode demandée est introuvable.
      */
     public static function route(): void
     {
@@ -40,17 +41,17 @@ final class Router
         $uri = filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_FULL_SPECIAL_CHARS) ?: filter_var($_SERVER['REQUEST_URI'], FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         // Si pas de verbe ou pas d'URI, rendre la vue 404.
         if (!$verb || !$uri)
-            self::render(cfg::get('ERROR_404_VIEW'));
+            self::render(Cfg::get('ERROR_404_VIEW'));
         // Charger la table de routage JSON.
         $routesJSON = @file_get_contents(Cfg::get('ROUTES_FILE'));
         // Si fichier introuvable, déclencher une exception.
         if (!$routesJSON)
-            throw new Exception("JSON routes file unavailable.");
+            throw new RouterException(RouterException::JSON_ROUTES_FILE_UNAVAILABLE);
         // Décoder le JSON.
         $routes = json_decode($routesJSON);
         // Si fichier JSON invalide, déclencher une exception.
         if (!$routes)
-            throw new Exception("JSON routes file corrupted.");
+            throw new RouterException(RouterException::JSON_ROUTES_FILE_CORRUPTED);
         // Parcourir la table de routage.
         foreach ($routes as $route) {
             // Utiliser l'expression régulière de l'URI avec un slash final optionnel. Délimiteur @ au lieu de /.
@@ -67,12 +68,22 @@ final class Router
                 // Préfixer le nom du contrôleur avec son namespace (pas de "use").
                 $controller = Cfg::get('CONTROLLERS_NAMESPACE') . '\\' . $controller;
                 // Invoquer la méthode du contrôleur en lui passant le tableau des paramètres.
-                $controller::$method($assocParams);
+                try {
+                    $controller::$method($assocParams);
+                } catch (Exception $e) {
+                    // Pour éliminer Error, relance simplement l'exception.
+                    throw $e;
+                } catch (Error) {
+                    // Filtre le cas où la méthode est inexistante.
+                    throw new RouterException(RouterException::CONTROLLER_METHOD_UNAVAILABLE);
+                }
+                // Retourner.
                 return;
             }
+
         }
         // Si aucune route trouvée, rendre la vue 404.
-        self::render(cfg::get('ERROR_404_VIEW'));
+        self::render(Cfg::get('ERROR_404_VIEW'));
     }
 
     /**
@@ -80,80 +91,76 @@ final class Router
      *
      * @param string $view Nom de la vue (ex: 'test.php').
      * @param array $params Tableau associatif des paramètres à transmettre à la vue.
-     *
-     * @throws Exception Si $params comporte une des clés 'view' ou 'params'.
+     * @throws RouterException Si $params comporte une clé 'view' ou 'params', ou si la vue demandée est introuvable.
      */
-    public static function render(string $view, array $params = []): void
+    public
+    static function render(string $view, array $params = []): void
     {
-
-        // Transformer chaque clé en variables du tableau associatif des variables.
-        if(extract($params, EXTR_SKIP)< count($params))
-            throw new Exception("Params array contains invalid key ('view' ou 'params').");
-
+        // Transformer chaque clé du tableau associatif en variable.
+        if (extract($params, EXTR_SKIP) < count($params))
+            throw new RouterException(RouterException::PARAMS_ARRAY_CONTAINS_INVALID_KEY);
         // Insérer la vue.
-        try{
-        @require Cfg::get('VIEWS_DIR').DIRECTORY_SEPARATOR.$view;
-        }  catch (Error){
-
-            throw new Exception("View {$view} not found. ");
+        try {
+            @require Cfg::get('VIEWS_DIR') . DIRECTORY_SEPARATOR . $view;
+        } catch (Error) {
+            throw new RouterException(RouterException::VIEW_NOT_FOUND);
         }
         // Arrêter l'exécution.
-
+        exit;
     }
 
     /**
-     * Envoie au client une chaîne en texte brut puis arrête l'exécution.
+     * Envoie au client une chaîne en texte brut et arrête l'exécution.
      *
      * @param string $text Chaîne de texte.
      */
-    public static function text(string $text): void
+    public
+    static function text(string $text): void
     {
         // Paramétrer l'entête HTTP du texte.
-        header('Content-Type: text/plain');
-        // Envoyer la chaîne texte au client et arrête l'exécution.
-        exit($text) ;
+        header('Content-Type:text/plain');
+        // Envoyer la chaîne texte au client puis arrêter l'exécution.
+        exit($text);
     }
 
     /**
-     * Envoie au client une chaîne JSON puis arrête l'exécution.
+     * Envoie au client une chaîne JSON et arrête l'exécution.
      *
      * @param string $json Chaîne JSON.
      */
-    public static function json(string $json): void
+    public
+    static function json(string $json): void
     {
         // Paramétrer l'entête HTTP du JSON.
         header('Content-Type: application/json');
-
-        // Envoyer la chaîne JSON au client et arrête l'exécution.
+        // Envoyer la chaîne JSON au client puis arrêter l'exécution.
         exit($json);
     }
 
     /**
-     * Envoie au client un fichier pour download (ou intégration comme par exemple une image) puis arrête l'exécution.
+     * Envoie au client un fichier pour download (ou intégration comme par exemple une image) et arrête l'exécution.
      *
      * @param string $filePath Chemin complet du fichier depuis la racine de l'application.
      * @param string $mimeType Type MIME du fichier.
      * @param string $fileName Nom du fichier proposé au client.
-     * @throws Exception Si fichier inéxistant.
+     * @throws RouterException Si fichier inexistant.
      */
-    public static function download(string $filePath, string $mimeType, string $fileName = 'File'): void
+    public
+    static function download(string $filePath, string $mimeType, string $fileName = 'File'): void
     {
-        //
-        if(!file_exists($filePath))
-            throw new Exception("File not found.");
-
+        // Si le fichier n'existe pas, déclencher une exception.
+        if (!file_exists($filePath))
+            throw new RouterException(RouterException::FILE_NOT_FOUND);
         // Paramétrer l'entête HTTP.
-        header("Content-Type: {$mimeType} ");
-        header('Content-Transfer-Encoding: Binary');
-        header('Content-Length: '.@filesize($filePath));
+        header("Content-Type: {$mimeType}");
+        header('Content-Transfer-Encoding: binary');
+        header('Content-Length: ' . @filesize($filePath));
         header("Content-Disposition: attachment; filename={$fileName}");
         // Lire le fichier et l'envoyer vers le client.
         readfile($filePath);
-        // Arrête l'exécution.
+        // Arrêter l'exécution.
         exit;
-
     }
-
 
     /**
      * Redirige côté client.
@@ -161,13 +168,12 @@ final class Router
      *
      * @param string $uri URI
      */
-    public static function redirect(string $uri): void
+    public
+    static function redirect(string $uri): void
     {
         // Envoyer la demande de redirection vers le client.
         header("Location: {$uri}");
-
         // Arrêter l'exécution.
         exit;
-
     }
 }
