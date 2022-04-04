@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace peps\core;
 
 use Error;
-use Exception;
 use PDO;
 use PDOException;
 use PDOStatement;
@@ -131,13 +130,13 @@ final class DBAL
             // Préparer et exécuter la requête.
             try {
                 $this->stmt = $this->db->prepare($q);
-            } catch (PDOException) {
-                throw new DBALException(DBALException::WRONG_PREPARED_SQL_QUERY);
+            } catch (PDOException $e) {
+                throw new DBALException(DBALException::WRONG_PREPARED_SQL_QUERY . ' ' . $e->getMessage());
             }
             try {
                 $this->stmt->execute($params);
-            } catch (PDOException) {
-                throw new DBALException(DBALException::WRONG_SQL_QUERY_PARAMETERS);
+            } catch (PDOException $e) {
+                throw new DBALException(DBALException::WRONG_SQL_QUERY_PARAMETERS . ' ' . $e->getMessage());
             }
             // Récupérer le nombre d'enregistrements retrouvés ou affectés.
             $this->nb = $this->stmt->rowCount();
@@ -146,16 +145,16 @@ final class DBAL
             // Récupérer le nombre d'enregistrements retrouvés.
             try {
                 $this->stmt = $this->db->query($q);
-            } catch (PDOException) {
-                throw new DBALException(DBALException::WRONG_SELECT_SQL_QUERY);
+            } catch (PDOException $e) {
+                throw new DBALException(DBALException::WRONG_SELECT_SQL_QUERY . ' ' . $e->getMessage());
             }
             $this->nb = $this->stmt->rowCount();
         } // Sinon (requête NON SELECT), l'executer et récupérer le nombre d'enregistrements affectés.
         else {
             try {
                 $this->nb = $this->db->exec($q);
-            } catch (PDOException) {
-                throw new DBALException(DBALException::WRONG_NON_SELECT_SQL_QUERY);
+            } catch (PDOException $e) {
+                throw new DBALException(DBALException::WRONG_NON_SELECT_SQL_QUERY . ' ' . $e->getMessage());
             }
             // Par sécurité, remettre à null l'instance de PDOStatement.
             $this->stmt = null;
@@ -203,15 +202,20 @@ final class DBAL
      *
      * @param string $className La classe donnée.
      * @return object|null L'instance de la classe donnée ou null.
+     * @throws DBALException Si classe inéxistante.
      */
     public function findOne(string $className = 'stdClass'): ?object
     {
         // Si pas de recordset, retourner null.
-
+        if (!$this->stmt)
+            return null;
         // Sinon, exploiter le recordset et retourner la première instance ou null.
-
-        //TEMP
-        return null;
+        try {
+            $this->stmt->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, $className);
+        } catch (Error) {
+            throw new DBALException(DBALException::FETCH_CLASS_UNAVAILABLE);
+        }
+        return $this->stmt->fetch();
     }
 
     /**
@@ -224,11 +228,12 @@ final class DBAL
     public function into(object $obj): bool
     {
         // Si pas de recordset, retourner false.
-
+        if(!$this->stmt)
+            return false;
         // Sinon, exploiter le recordset et hydrater l'instance.
+        $this->stmt->setFetchMode(PDO::FETCH_INTO,$obj);
+        return (bool)$this->stmt->fetch();
 
-        //TEMP
-        return true;
     }
 
     /**
@@ -238,8 +243,7 @@ final class DBAL
      */
     public function pk(): int
     {
-        //TEMP
-        return 0;
+        return (int)$this->db->lastInsertId();
     }
 
     /**
@@ -250,7 +254,7 @@ final class DBAL
      */
     public function start(): self
     {
-        //TEMP
+        $this->db->beginTransaction();
         return $this;
     }
 
@@ -263,7 +267,8 @@ final class DBAL
      */
     public function savepoint(string $label): self
     {
-        //TEMP
+        $q = "SAVEPOINT {$label}";
+        $this->xeq($q);
         return $this;
     }
 
@@ -276,8 +281,13 @@ final class DBAL
      */
     public function rollback(?string $label = null): self
     {
-        //TEMP
-        return $this;
+        $q = "ROLLBACK";
+
+        if($label)
+
+            $q .= " TO {$label}";
+            $this->xeq($q);
+            return $this;
     }
 
     /**
@@ -288,7 +298,7 @@ final class DBAL
      */
     public function commit(): self
     {
-        //TEMP
+        $this->db->commit();
         return $this;
     }
 }

@@ -73,9 +73,9 @@ final class Router
                 } catch (Exception $e) {
                     // Pour éliminer Error, relance simplement l'exception.
                     throw $e;
-                } catch (Error) {
+                } catch (Error $e) {
                     // Filtre le cas où la méthode est inexistante.
-                    throw new RouterException(RouterException::CONTROLLER_METHOD_UNAVAILABLE);
+                    throw new RouterException(RouterException::CONTROLLER_METHOD_FAILED. ' '. $e->getMessage());
                 }
                 // Retourner.
                 return;
