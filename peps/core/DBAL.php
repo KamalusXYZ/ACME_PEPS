@@ -168,7 +168,7 @@ final class DBAL
      *
      * @return int|null Le nombre d'enregistrements.
      */
-    public function nb(): ?int
+    public function getNb(): ?int
     {
         return $this->nb;
     }

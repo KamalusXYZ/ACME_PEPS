@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 use peps\core\Cfg;
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -13,3 +14,29 @@ use peps\core\Cfg;
     <title><?= Cfg::get('appTilte') ?></title>
     <link rel="stylesheet" href="/assets/css/acme.css"/>
 </head>
+<body>
+<header></header>
+<main>
+
+    <div class="category">
+        <a href="/product/list">Produits</a>  >  <?= $product->name  ?>
+    </div>
+    <div id="detailProduct">
+        <img src="<?= $product->getImgPath('big') ?>" alt="<?= $product->name ?>" />
+        <div>
+            <div class="price"><?= $product->formattedPrice ?></div>
+            <div class="category">catégorie<br />
+                <?= $product->category->name ?>
+            </div>
+            <div class="ref">référence<br />
+                <?= $product->ref ?></div>
+
+
+        </div>
+    </div>
+
+</main>
+<footer></footer>
+</body>
+
+</html>

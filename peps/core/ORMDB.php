@@ -29,12 +29,12 @@ class ORMDB extends ORM
 	public function hydrate(): bool
 	{
 		// Récupérer le nom court (pas pleinement qualifié) de la classe de l'entité $this pour en déduire le nom de la table.
-        $classname = (new ReflectionClass($this))->getShortName();
-        $tablename = lcfirst($classname);
+        $className = (new ReflectionClass($this))->getShortName();
+        $tableName = lcfirst($className);
         // Construire le nom de la PK à partir du nom de la classe.
-        $pkName = "id{$classname}";
+        $pkName = "id{$className}";
 		// Exécuter la requête et hydrater $this.
-        $q = "SELECT * FROM {$tablename} WHERE $pkName = :__ID__";
+        $q = "SELECT * FROM {$tableName} WHERE $pkName = :__ID__";
         $params = ['__ID__'=> $this->$pkName ];
         return DBAL::get()->xeq($q, $params)->into($this);
 	}
@@ -46,10 +46,10 @@ class ORMDB extends ORM
 	{
 		// Récupérer le nom court (pas pleinement qualifié) de la classe de l'entité $this pour en déduire le nom de la table.
         $rc = new ReflectionClass($this);
-        $classname = $rc->getShortName();
-        $tablename = lcfirst($classname);
+        $className = $rc->getShortName();
+        $tableName = lcfirst($className);
 		// Construire le nom de la PK à partir du nom de la classe.
-        $pkName = "id{$classname}";
+        $pkName = "id{$className}";
 
 		// Récupérer le tableau des propriétés publiques de la classe.
         $properties = $rc->getProperties(ReflectionProperty::IS_PUBLIC);
@@ -60,21 +60,33 @@ class ORMDB extends ORM
 
 		// Pour chaque propriété, construire les éléments des requêtes SQL et compléter les paramètres.
         foreach ($properties as $property){
-            $params[]= $property;
-            $strInsertColumns = "INSERT INTO $classname  ($pkName) VALUES ($$pkName) ";
+        $propertyName = $property->getName();
 
-            $strInsertColumns = "UPDATE $classname SET $property = x WHERE id = $pkName";
-
-
+        $strInsertColumns .= "{$propertyName},";
+        $strInsertValues .= ":$propertyName,";
+        $strUpdate .= "$propertyName = :$propertyName,";
+        $params[":$propertyName"]= $this->$propertyName;
 
         }
 
 		// Supprimer la dernière virgule de chaque élément de requête.
+        $strInsertColumns = rtrim($strInsertColumns, ',');
+        $strInsertValues = rtrim($strInsertValues, ',');
+        $strUpdate = rtrim($strUpdate, ',');
 
 		// Créer les requêtes et les paramètres SQL.
 
-		// Exécuter la requête INSERT ou UPDATE et, si INSERT, récupérer la PK auto-incrémentée.
 
+        $strInsert = "INSERT INTO {$tableName} ({$strInsertColumns}) VALUES ({$strInsertValues})";
+
+        $strUpdate = "UPDATE {$tableName} SET {$strUpdate} WHERE {$pkName} = :__ID__";
+        $paramsInsert = $paramsUpdate = $params;
+        $paramsUpdate[":__ID__"] = $this->$pkName;
+
+
+		// Exécuter la requête INSERT ou UPDATE et, si INSERT, récupérer la PK auto-incrémentée.
+        $dbal = DBAL::get();
+        $this->$pkName ? $dbal->xeq($strUpdate, $paramsUpdate) : $this->$pkName = $dbal->xeq($strInsert, $paramsInsert)->pk();
 		// Retourner true systématiquement.
         return true;
 	}
@@ -85,15 +97,19 @@ class ORMDB extends ORM
 	public function remove(): bool
 	{
 		// Récupérer le nom court (pas pleinement qualifié) de la classe de l'entité $this pour en déduire le nom de la table.
-
+        $rc = new ReflectionClass($this);
+        $className = $rc->getShortName();
+        $tableName = lcfirst($className);
 		// Construire le nom de la PK à partir du nom de la classe.
-
+        $pkName = "id{$className}";
 		// Si PK non renseignée, retourner false.
-
+        if(!$this->$pkName)
+            return false;
 		// Exécuter la requête et retourner la conclusion.
+        $q = "DELETE FROM {$tableName} WHERE $pkName = :__ID__";
+        $params = [":__ID__" => $this->$pkName];
+        return (bool)DBAL::get()->xeq($q, $params)->getNb();
 
-        //TEMP
-        return true;
 	}
 
 	/**
@@ -101,37 +117,52 @@ class ORMDB extends ORM
 	 */
 	public static function findAllBy(array $filters = [], array $sortKeys = [], string $limit = ''): array
 	{
-		// Récupérer le nom court (pas pleinement qualifié) de la classe de l'entité $this pour en déduire le nom de la table.
+		// Récupérer le nom court (pas pleinement qualifié) de la classe.
+        $className = (new ReflectionClass(static::class))->getShortName();
+        $tableName = lcfirst($className);
 
-		// Initialiser les requêtes SQL et les paramètres SQL.
+		// Initialiser la requête SQL et les paramètres SQL.
+        $q = "SELECT * FROM {$tableName}";
+        $params = [];
 
         // Si filtres présents...
+        if($filters){
 
             // Construire la clause WHERE.
+        $q .= " WHERE ";
+        foreach ($filters as $col => $val){
+            $q .= " {$col} = :{$col} AND ";
+            $params[":{$col}"] = $val;
 
+        }
 			// Supprimer le dernier ' AND'.
-
+            $q = rtrim($q, ' AND ');
+        }
         // Si clés de tri présents...
-
+        if($sortKeys){
 			// Construire la clause ORDER BY.
+            $q .= " ORDER BY";
+            foreach ($sortKeys as $key => $type)
+                $q .= " {$key} {$type},";
 
-			// Supprimer la dernière virgule.
-
+            // Supprimer la dernière virgule.
+            $q = rtrim($q, ',');
+            }
         // Si limite, ajouter la clause LIMIT.
+        if($limit)
+                $q .= " LIMIT {$limit}";
 
 		// Exécuter la requête et retourner le tableau.
+        return DBAL::get()->xeq($q, $params)->findAll(static::class);
 
-        //TEMP
-        return [];
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public static function findOneBy(array $filters = []): ?ORM
+	public static function findOneBy(array $filters = []): ?static
 	{
 
-        //TEMP
-        return null;
+        return self::findAllBy($filters ,[],'1')[0] ?? null;
 	}
 }

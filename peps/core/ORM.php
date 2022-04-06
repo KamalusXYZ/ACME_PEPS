@@ -59,7 +59,7 @@ abstract class ORM implements JsonSerializable
 	 * @param array $filters Tableau associatif de filtres d'égalité reliées par 'AND' sous la forme 'champ' = 'valeur'. Ex: ['name' => 'truc', 'idCategory' => 3].
 	 * @return ORM|null L'instance ou null.
 	 */
-	public abstract static function findOneBy(array $filters = []): ?ORM;
+	public abstract static function findOneBy(array $filters = []): ?static;
 
 	/**
 	 * Retourne le résultat de l'invocation de la méthode get{PropertyName}() si elle existe.

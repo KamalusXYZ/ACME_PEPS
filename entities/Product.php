@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace entities;
 
-use peps\core\Entity;
+use peps\core\Cfg;
+use peps\core\ORMDB;
 
 
 /**
  * Entité Product.
  * Toutes les propriétés à null par défaut pour les éventuels formulaires de saisie.
  *
- * @see Entity
+ * @see ORMDB
  */
-class Product extends Entity
+class Product extends ORMDB
 {
     /**
      * @var int | null PK.
@@ -64,36 +65,10 @@ class Product extends Entity
     protected function getCategory(): ?Category
     {
         // Si propriété non renseignée, requêter la DB.
-        if (!$this->category) {
-            $q = "SELECT * FROM category WHERE idCategory = :idCategory";
-            $params = [':idCategory' => $this->idCategory];
-            $rs = DBAL::getPDO()->prepare($q);
-            $rs->execute($params);
-            $rs->setFetchMode(PDO::FETCH_CLASS, Category::class);
-            $this->category = $rs->fetch() ?: null;
-        }
-        return $this->category;
-    }
+        if (!$this->category)
+            $this->category = Category::findOneBy(["idCategory"=>$this->idCategory]);
 
-    /**
-     * Hydrate le produit en se basant sur sa PK.
-     *
-     * @return bool Vrai si hydratation réussie. False sinon.
-     */
-    public function hydrate(): bool
-    {
-        // Si idProduct invalide, retourner false.
-        if (!$this->idProduct) {
-            return false;
-        }
-        // Requêter la DB.
-        $q = "SELECT * FROM product WHERE idProduct = :idProduct";
-        $params = [':idProduct' => $this->idProduct];
-        $rs = DBAL::getPDO()->prepare($q);
-        $rs->execute($params);
-        $rs->setFetchMode(PDO::FETCH_INTO, $this);
-        // Hydrater le produit et retourner le succès ou l'échec.
-        return (bool)$rs->fetch();
+        return $this->category;
     }
 
     /**
@@ -105,7 +80,7 @@ class Product extends Entity
      */
     public function getImgPath(string $size): string
     {
-        $path = Cfg::IMG_ROOT . "product_{$this->idProduct}_{$size}.jpg";
-        return file_exists($path) ? $path : Cfg::IMG_ROOT . "product_0_{$size}.jpg";
+        $path = Cfg::get('imgProductsDir') . "/product_{$this->idProduct}_{$size}.jpg";
+        return '/'. (file_exists($path) ? $path : Cfg::get('imgProductsDir') . "/product_0_{$size}.jpg");
     }
 }

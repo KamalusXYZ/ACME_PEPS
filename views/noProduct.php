@@ -13,3 +13,13 @@ use peps\core\Cfg;
     <title><?= Cfg::get('appTilte') ?></title>
     <link rel="stylesheet" href="/assets/css/acme.css"/>
 </head>
+<body>
+<header></header>
+<main>
+    <div class="category">
+        <a href="/">Accueil</a> &gt; Produit indisponible
+    </div>
+    <img src="/assets/img/noProduct.jpg" alt="Produit indisponible" />
+</main>
+<footer></footer>
+</body>

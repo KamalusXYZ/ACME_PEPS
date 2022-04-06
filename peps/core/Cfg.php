@@ -41,7 +41,7 @@ class Cfg
     protected static function init(): void
     {
         // Chemin du fichier JSON des routes depuis la racine de l'application.
-        self::register('ROUTES_FILE', 'cfg' . DIRECTORY_SEPARATOR . 'routes.json');
+        self::register('ROUTES_FILE',   'cfg/routes.json');
 
         // Namespace des contrôleurs.
         self::register('CONTROLLERS_NAMESPACE', '\\controllers');

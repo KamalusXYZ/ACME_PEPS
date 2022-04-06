@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace entities;
 
-use classes\Product;
-use PDO;
+use peps\core\ORMDB;
 
 /**
  * Entité Category.
@@ -13,7 +12,7 @@ use PDO;
  *
  * @see Entity
  */
-class Category extends Entity
+class Category extends ORMDB
 {
     /**
      * @var int | null PK.
@@ -38,29 +37,23 @@ class Category extends Entity
      *
      * @return Product[] Tableau des produits.
      */
+
+    /**
+     * Constructeur.
+     *
+     * @param int|null $idCategory PK.
+     */
+    public function __construct(?int $idCategory = null)
+    {
+        $this->idCategory = $idCategory;
+    }
+
     protected function getProducts(): array
     {
         // Si propriété non renseignée, requêter la DB.
-        if (!$this->products) {
-            $q = "SELECT * FROM product WHERE idCategory = :idCategory ORDER BY name";
-            $params = [':idCategory' => $this->idCategory];
-            $rs = DBAL::getPDO()->prepare($q);
-            $rs->execute($params);
-            $rs->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Product::class);
-            $this->products = $rs->fetchAll();
-        }
+        if(!$this->products)
+            $this->products = Product::findAllBy(['idCategory'=>$this->idCategory],['name'=>'ASC']);
         return $this->products;
     }
 
-    /**
-     * Retourne un tableau de toutes les catégories triées par nom.
-     *
-     * @return Category[] Les catégories.
-     */
-    public static function all(): array {
-        $q = "SELECT * FROM category ORDER BY name";
-        $rs = DBAL::getPDO()->query($q);
-        $rs->setFetchMode(PDO::FETCH_CLASS, Category::class);
-        return $rs->fetchAll();
-    }
 }

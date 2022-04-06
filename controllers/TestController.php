@@ -7,6 +7,7 @@ namespace controllers;
 use entities\Product;
 use Exception;
 use peps\core\DBAL;
+use peps\core\ORMDB;
 use peps\core\Router;
 
 /**
@@ -30,13 +31,8 @@ final class TestController
      * @return void
      */
     public static function test(array $params):void {
-        // TODO: TESTER METHODE GET
-        $dbal = DBAL::get()->start();
-        $dbal->savepoint('Test');
-        $q2 = "INSERT INTO product VALUES (DEFAULT ,1, 'Test2', 'TEST2', 123.45)";
-        var_dump($dbal->xeq($q2)->pk());
-        $dbal->rollback();
-
+    $product = new Product(1);
+    var_dump($product->getImgPath('small'));
 
     }
 }
