@@ -42,8 +42,12 @@ use peps\core\Cfg;
                 <a class="ico update" href="/product/update/<?= $product->idProduct ?>">
                     <img src="/assets/img/ico/update.svg" alt="Edit the product" />
                 </a>
-                <img class="ico delete" src="/assets/img/ico/delete.svg" alt="Delete the product" />
-                <img class="ico deleteImg" src="/assets/img/ico/deleteImg.svg" alt="Delete the image" />
+
+                    <img class="ico delete" src="/assets/img/ico/delete.svg" alt="Delete the product" onclick="deleteAll(<?= $product->idProduct ?>,`<?= $product->name ?>`)"/>
+
+                    <img class="ico deleteImg" src="/assets/img/ico/deleteImg.svg" alt="Delete the image" onclick="deleteImg(<?= $product->idProduct ?>,`<?= $product->name ?>`)" />
+
+
 
             </div>
             <?php
@@ -52,4 +56,5 @@ use peps\core\Cfg;
     ?>
 </main>
 <footer></footer>
+<script src="/assets/js/listProduct.js" type="application/javascript"> </script>
 </body>

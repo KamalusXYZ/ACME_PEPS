@@ -51,7 +51,13 @@ use peps\core\Cfg;
 				<label>Prix</label>
 				<input type="number" name="price" value="<?= $product->formattedPrice ?>" min="0.01" max="9999.99" step="0.01" size="7" maxlength="7" required="required" />
 			</div>
-			<div class="item">
+            <div class="item">
+                <label>Photo (JPEG)</label>
+                <input type="file" name="photo"/>
+            </div>
+
+
+            <div class="item">
 				<label></label>
 				<a href="/product/list"><input type="button" value="Annuler" /></a>
 				<input type="submit" name="submit" value="Valider" />

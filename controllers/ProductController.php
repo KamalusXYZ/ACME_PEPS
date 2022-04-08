@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace controllers;
 
+use cfg\CfgApp;
 use entities\Category;
 use entities\Product;
 use Exception;
@@ -13,6 +14,8 @@ use peps\core\DBALException;
 use peps\core\ORMDB;
 use peps\core\Router;
 use peps\core\RouterException;
+use peps\upload\Upload;
+use peps\upload\UploadException;
 
 /**
  * Classe 100% statique de gestion des produits.
@@ -129,6 +132,20 @@ final class ProductController
      */
     public static function save(): void
     {
+        try {
+            $upload = new Upload('photo', 10000000, ['image/jpeg'],false);
+            if($upload->complete) {
+                $upload->save(Cfg::get('imgProductsDir'). "/product_99.jpg");
+            }
+        }
+        catch (UploadException $e){
+            exit($e->getMessage());
+
+        }
+        var_dump($upload);
+        exit;
+
+
         //Créer un produit.
         $product = new Product();
 
@@ -169,8 +186,30 @@ final class ProductController
         }
         Router::redirect('/product/list');
 
+    }
 
+    /**
+     * Supprime un produit et/ou ses images.
+     *     * @param array $params Tableau associatif des paramètres.
+     * GET /product/delete/{idProduct}/{all | img}
+     *
+     * @return void
+     * @throws DBALException
+     */
+    public static function delete(array $params): void
+    {
+        // Récupérer idProduct et mode.
+        $idProduct = (int)$params['idProduct'];
+        $mode = $params['mode'];
+        // Si mode all, supprimer le produit.
+        if($mode === 'all')
+            (new Product($idProduct))->remove();
+        // Supprimer les images.
+        @unlink(Cfg::get('imgProductsDir')."/product_{$idProduct}_small.jpg");
+        @unlink(Cfg::get('imgProductsDir')."/product_{$idProduct}_big.jpg");
 
+        // Redirigier vers la liste des produits.
+        Router::redirect('/product/list');
     }
 
 }
