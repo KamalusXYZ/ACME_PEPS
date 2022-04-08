@@ -39,9 +39,10 @@ class ORMDB extends ORM
         return DBAL::get()->xeq($q, $params)->into($this);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+    /**
+     * {@inheritDoc}
+     * @throws DBALException
+     */
 	public function persist(): bool
 	{
 		// Récupérer le nom court (pas pleinement qualifié) de la classe de l'entité $this pour en déduire le nom de la table.
@@ -91,9 +92,10 @@ class ORMDB extends ORM
         return true;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+    /**
+     * {@inheritDoc}
+     * @throws DBALException
+     */
 	public function remove(): bool
 	{
 		// Récupérer le nom court (pas pleinement qualifié) de la classe de l'entité $this pour en déduire le nom de la table.
@@ -112,9 +114,10 @@ class ORMDB extends ORM
 
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+    /**
+     * {@inheritDoc}
+     * @throws DBALException
+     */
 	public static function findAllBy(array $filters = [], array $sortKeys = [], string $limit = ''): array
 	{
 		// Récupérer le nom court (pas pleinement qualifié) de la classe.
@@ -162,7 +165,6 @@ class ORMDB extends ORM
 	 */
 	public static function findOneBy(array $filters = []): ?static
 	{
-
         return self::findAllBy($filters ,[],'1')[0] ?? null;
 	}
 }

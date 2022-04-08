@@ -64,6 +64,9 @@ class Cfg
 
         //Instance de NumberFormatter pour formater un nombre avec 2 décimales selon la locale.
         self::register('NF_LOCALE_2DEC', NumberFormatter::create(self::get('LOCALE'), NumberFormatter::PATTERN_DECIMAL, '#,##0.00'));
+
+        //Instance de NumberFormatter pour formater un nombre avec 2 décimales selon la locale us.
+        self::register('NF_US_2DEC', NumberFormatter::create('en-us', NumberFormatter::PATTERN_DECIMAL, '0.00'));
     }
 
     /**

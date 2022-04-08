@@ -39,7 +39,11 @@ use peps\core\Cfg;
                     <div class="name"> <?= $product->name ?> </div>
 
                 </a>
-
+                <a class="ico update" href="/product/update/<?= $product->idProduct ?>">
+                    <img src="/assets/img/ico/update.svg" alt="Edit the product" />
+                </a>
+                <img class="ico delete" src="/assets/img/ico/delete.svg" alt="Delete the product" />
+                <img class="ico deleteImg" src="/assets/img/ico/deleteImg.svg" alt="Delete the image" />
 
             </div>
             <?php
