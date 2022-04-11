@@ -53,9 +53,9 @@ use peps\core\Cfg;
 			</div>
             <div class="item">
                 <label>Photo (JPEG)</label>
-                <input type="file" name="photo"/>
+                <input type="file" name="photo">
+                <input type="button" value="Parcourir..." onclick="this.form.photo.click()"/>
             </div>
-
 
             <div class="item">
 				<label></label>
@@ -63,6 +63,10 @@ use peps\core\Cfg;
 				<input type="submit" name="submit" value="Valider" />
 			</div>
 		</form>
+        <div id="thumbnail">
+            <img src="<?=$product->getImgPath('small')?>" alt="">
+            
+        </div>
 	</main>
 	<footer></footer>
 </body>

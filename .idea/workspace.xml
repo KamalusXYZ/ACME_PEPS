@@ -4,16 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e15a41a2-c36e-4b80-8e52-f4e669aca6dc" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/acme.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/js/listProduct.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/acme_v2.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/deployment.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+    <list default="true" id="e15a41a2-c36e-4b80-8e52-f4e669aca6dc" name="Changes" comment="mise a jour 08/04/22">
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/peps/image/Image.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/peps/image/ImageException.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/peps/image/ImageJpeg.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/peps/image/ImageJpegException.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assets/css/acme.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/css/acme.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/img/products/product_99.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/assets/img/products/product_99.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/ProductController.php" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/ProductController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/editProduct.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/editProduct.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/listProducts.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/listProducts.php" afterDir="false" />
@@ -40,7 +40,7 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="27VRiO6YoB3TmrH7DkI3GYvzvSX" />
-  <component name="ProjectLevelVcsManager">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
   </component>
   <component name="ProjectViewState">
@@ -49,8 +49,10 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />

@@ -142,8 +142,8 @@ final class ProductController
             exit($e->getMessage());
 
         }
-        var_dump($upload);
-        exit;
+
+
 
 
         //Créer un produit.
