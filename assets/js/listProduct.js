@@ -1,3 +1,6 @@
+"use strict";
+
+
 function deleteAll(idProduct, name){
 
    if (confirm(`Vraiment supprimer le produit ${name}`))

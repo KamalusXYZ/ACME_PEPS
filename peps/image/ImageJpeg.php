@@ -20,18 +20,19 @@ final class ImageJpeg extends Image
 	 */
 	private int $quality;
 
-	/**
-	 * Constructeur.
-	 * 
-	 * @param string $path Chemin du fichier JPEG source.
-	 * @param int $quality Qualité (60 par défaut).
-	 */
+    /**
+     * Constructeur.
+     *
+     * @param string $path Chemin du fichier JPEG source.
+     * @param int $quality Qualité (60 par défaut).
+     * @throws ImageException
+     */
 	public function __construct(string $path, int $quality = 60)
 	{
 		// Appeler le constructeur parent.
-
+        parent::__construct($path);
 		// Définir les propriétés propres au type JPEG.
-
+        $this->quality = $quality;
 	}
 
 	/**
@@ -39,27 +40,30 @@ final class ImageJpeg extends Image
 	 */
 	public function getMimeType(): string
 	{
-        //TEMP
-        return '';
+        return "image/jpeg";
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+    /**
+     * {@inheritDoc}
+     * @throws ImageJpegException
+     */
 	protected function from(): GdImage
 	{
 		// Si la création de la ressource GdImage à partir du fichier échoue, déclencher une exception.
-
+       if (!($gdSource = imagecreatefromjpeg($this->path)))
+           throw new ImageJpegException(ImageJpegException::RESOURCE_FROM_JPEG_CREATION_FAILED);
 		// Retourner la ressource GdImage.
-
+        return $gdSource;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+    /**
+     * {@inheritDoc}
+     * @throws ImageJpegException
+     */
 	protected function to($gdImage, string $targetPath): void
 	{
 		// Si la création du fichier depuis la ressource échoue, déclencher une exception.
-
+        if(!imagejpeg($gdImage, $targetPath, $this->quality))
+            throw new ImageJpegException(ImageJpegException::JPEG_FROM_RESOURCE_CREATION_FAILED);
 	}
 }

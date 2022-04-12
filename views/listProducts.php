@@ -3,6 +3,9 @@
 declare(strict_types=1);
 use peps\core\Cfg;
 
+//Pour l IDE
+$product = $product ?? null;
+$categories = $categories ?? null;
 
 
 ?>

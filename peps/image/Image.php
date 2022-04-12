@@ -69,25 +69,6 @@ abstract class Image
      */
     public abstract function getMimeType(): string;
 
-    /**
-     * Accès public en lecture seule à la largeur.
-     *
-     * @return integer|null Largeur en pixels.
-     */
-    public function getWidth(): ?int
-    {
-        return $this->width;
-    }
-
-    /**
-     * Accès public en lecture seule à la hauteur.
-     *
-     * @return integer|null Hauteur en pixels.
-     */
-    public function getHeight(): ?int
-    {
-        return $this->height;
-    }
 
     /**
      * Crée un fichier image correspondant au redimensionnement de l'image pour l'inscrire dans un cadre donné.
@@ -153,7 +134,7 @@ abstract class Image
      * Crée le fichier image cible à partir de la ressource GdImage source.
      * Implémentation nécessaire en fonction du type MIME.
      *
-     * @param resource $target Ressource GdImage cible.
+     * @param resource $gdImage Ressource GdImage cible.
      * @param string $targetPath Chemin complet du fichier image cible à créer.
      */
     protected abstract function to($gdImage, string $targetPath): void;

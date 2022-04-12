@@ -40,14 +40,14 @@ class Upload
         // Il y a toujours une entrée dans $_FILES sauf si la taille du fichier excède la limite 'post_max_size'.
         // Dans ce cas et dans les autres cas de dépassement, déclencher une exception.*
         if (!$file || $file['error'] === UPLOAD_ERR_INI_SIZE || $file['error'] === UPLOAD_ERR_FORM_SIZE)
-            throw UploadException(UploadException::FILE_SIZE_EXCEEDS_CLIENT_OR_SERVER_LIMIT);
+            throw new UploadException(UploadException::FILE_SIZE_EXCEEDS_CLIENT_OR_SERVER_LIMIT);
         // Si le fichier est absent...
         if ($file['error'] === UPLOAD_ERR_NO_FILE) {
             // Si le fichier est facultatif, retourner.
             if ($optional)
                 return;
             // Sinon, déclencher une exception.
-            throw UploadException(UploadException::FILE_NOT_FOUND);
+            throw new UploadException(UploadException::FILE_NOT_FOUND);
         }
         // Récupérer le chemin serveur temporaire.
         $this->tmpFilePath = $file['tmp_name'];
@@ -59,7 +59,7 @@ class Upload
             throw new UploadException(UploadException::EMPTY_FILE);
         // Si la taille du fichier dépasse la limite fixée, déclencher une exception.
         if ($file['size'] > $maxFileSize)
-            throw new UploadException(UploadException::FILE_SIZE_EXCEEDS_CLIENT_OR_SERVER_LIMIT);
+            throw new UploadException(UploadException::FILE_SIZE_EXCEEDS_APPLICATION_LIMIT);
         // Si types MIME imposés et fichier non compatible, déclencher une exception.
         if ($allowedMimeTypes && !in_array($file['type'], $allowedMimeTypes))
             throw new UploadException(UploadException::WRONG_MIME_TYPE);

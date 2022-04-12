@@ -23,9 +23,10 @@ use ReflectionProperty;
  */
 class ORMDB extends ORM
 {
-	/**
-	 * {@inheritDoc}
-	 */
+    /**
+     * {@inheritDoc}
+     * @throws DBALException
+     */
 	public function hydrate(): bool
 	{
 		// Récupérer le nom court (pas pleinement qualifié) de la classe de l'entité $this pour en déduire le nom de la table.
@@ -132,14 +133,14 @@ class ORMDB extends ORM
         if($filters){
 
             // Construire la clause WHERE.
-        $q .= " WHERE ";
+        $q .= " WHERE";
         foreach ($filters as $col => $val){
-            $q .= " {$col} = :{$col} AND ";
+            $q .= " {$col} = :{$col} AND";
             $params[":{$col}"] = $val;
 
         }
 			// Supprimer le dernier ' AND'.
-            $q = rtrim($q, ' AND ');
+            $q = rtrim($q,' AND');
         }
         // Si clés de tri présents...
         if($sortKeys){
@@ -160,9 +161,10 @@ class ORMDB extends ORM
 
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+    /**
+     * {@inheritDoc}
+     * @throws DBALException
+     */
 	public static function findOneBy(array $filters = []): ?static
 	{
         return self::findAllBy($filters ,[],'1')[0] ?? null;

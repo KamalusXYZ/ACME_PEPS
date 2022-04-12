@@ -264,6 +264,7 @@ final class DBAL
      *
      * @param string $label Nom du point de restauration.
      * @return self $this pour chaînage.
+     * @throws DBALException
      */
     public function savepoint(string $label): self
     {
@@ -278,6 +279,7 @@ final class DBAL
      *
      * @param string|null $label Nom du point de restauration (optionnel).
      * @return self $this pour chaînage.
+     * @throws DBALException
      */
     public function rollback(?string $label = null): self
     {

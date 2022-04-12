@@ -25,7 +25,7 @@ class Entity
         // Tenter de l'invoquer.
         try {
             return $this->$methodName();
-        } catch (Error $e) {
+        } catch (Error) {
             return null;
         }
     }

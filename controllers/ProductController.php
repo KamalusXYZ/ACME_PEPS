@@ -14,6 +14,8 @@ use peps\core\DBALException;
 use peps\core\ORMDB;
 use peps\core\Router;
 use peps\core\RouterException;
+use peps\image\ImageException;
+use peps\image\ImageJpeg;
 use peps\upload\Upload;
 use peps\upload\UploadException;
 
@@ -26,7 +28,7 @@ final class ProductController
 {
     const ERR_INVALID_NAME = "Nom invalide.";
     const ERR_INVALID_REF = "Référence invalide.";
-    const ERR_PERSISTANCE_REF = "Catégorie invalide ou référence déja éxistante.";
+    const ERR_PERSISTANCE = "Catégorie invalide ou référence déja éxistante.";
     const ERR_INVALID_PRICE = "Prix invalide.";
 
     /**
@@ -170,20 +172,49 @@ final class ProductController
         //Vérifier la prix (obligatoire et <=0 ou si  <= 10000.)
         if(!$product->price || $product->price <= 0 || $product->price >= 10000 )
             $errors[]= self::ERR_INVALID_PRICE;
-
+        // Si aucune erreur...
         if(!$errors) {
             try {
+                //Commencer une transaction.
+                DBAL::get()->start();
+                // Persister le produit.
                 $product->persist();
+                // Vérifier l'upload
+                $upload = new Upload('photo',Cfg::get('imgMaxFileSize'),Cfg::get('imgAllowedMimeTypes'));
+                // Si upload complet ,sauvegarder les photos 'small' et 'big'.
+                if($upload->complete && is_uploaded_file($upload->tmpFilePath)) {
+                    $image = new ImageJpeg($upload->tmpFilePath);
+                    $image->copyResize(Cfg::get('imgSmallWidth'), Cfg::get('imgSmallHeigth'), Cfg::get('imgDir')."/product_{$product->idProduct}_small.jpg");
+                    $image->copyResize(Cfg::get('imgBigWidth'), Cfg::get('imgBigHeigth'), Cfg::get('imgDir')."/product_{$product->idProduct}_big.jpg");
+                }
+                else{
+                    // si pas de fichier, valider la transaction.
+                    DBAL::get()->commit();
+                    Router::redirect('/product/list');
+                }
+
+
+
             }catch(DBALException) {
-                $errors[] = self::ERR_PERSISTANCE_REF;
+                $errors[] = self::ERR_PERSISTANCE;
+            } catch (ImageException|UploadException $e) {
+                $errors[] = $e->getMessage();
+
             }
 
         }
+        // Si erreurs, rollback et  rendre le formulaire avec les erreurs.
         if($errors){
+            //Rollback
+            DBAL::get()->rollback();
             $product->formattedPrice = $product->price ? Cfg::get('NF_US_2DEC')->format($product->price) : null;
+            //
             $categories = Category::findAllBy([],['name'=>'ASC']);
+            //Rendre la vue.
             Router::render('editProduct.php', ['categories'=>$categories,'product'=>$product,'errors'=>$errors]);
         }
+        //Sinon commit et rediriger vers la vue liste des produits.
+        DBAL::get()->commit();
         Router::redirect('/product/list');
 
     }

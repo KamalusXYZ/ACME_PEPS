@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 use peps\core\Cfg;
 
+
+//Pour l IDE
+$product = $product ?? null;
+$categories = $categories ?? null;
+
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -22,7 +27,7 @@ use peps\core\Cfg;
 		</div>
 		<div class="error"><?= implode('<br/>',$errors ?? []) ?></div>
 		<form name="form1" action="/product/save" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="idProduct" value="<?= $product->idProduct ?>"
+            <input type="hidden" name="idProduct" value="<?= $product->idProduct ?>">
 			<div class="item">
 				<label>Catégorie</label>
 				<select name="idCategory">
@@ -30,7 +35,7 @@ use peps\core\Cfg;
                     foreach ($categories as $category){
                         $selected = $category->idCategory === $product->idCategory ? 'selected="selected"' : '';
                     ?>
-                        <option value="<?=$category->idCategory ?>"<?= $selected ?>>
+                        <option value="<?=$category->idCategory ?>" <?= $selected ?>>
                             <?=$category->name ?>
                         </option>
 
@@ -53,7 +58,10 @@ use peps\core\Cfg;
 			</div>
             <div class="item">
                 <label>Photo (JPEG)</label>
-                <input type="file" name="photo">
+                <input type="file"
+                       name="photo"
+                       onchange="displayPhoto(this.files)"
+                       accept="<?= join(',',Cfg::get('imgAllowedMimeTypes')) ?>">
                 <input type="button" value="Parcourir..." onclick="this.form.photo.click()"/>
             </div>
 
@@ -69,6 +77,13 @@ use peps\core\Cfg;
         </div>
 	</main>
 	<footer></footer>
+
+    <script>
+            const IMG_MAX_FILE_SIZE = <?= Cfg::get('imgMaxFileSize') ?>;
+            const IMG_ALLOW_MIME_TYPES = <?= json_encode(Cfg::get('imgAllowedMimeTypes'),JSON_UNESCAPED_SLASHES) ?>;
+    </script>
+    <script src="/assets/js/editProduct.js" type="application/javascript"></script>
+
 </body>
 
 </html>

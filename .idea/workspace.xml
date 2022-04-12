@@ -4,19 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e15a41a2-c36e-4b80-8e52-f4e669aca6dc" name="Changes" comment="mise a jour 08/04/22">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/peps/image/Image.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/peps/image/ImageException.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/peps/image/ImageJpeg.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/peps/image/ImageJpegException.php" afterDir="false" />
+    <list default="true" id="e15a41a2-c36e-4b80-8e52-f4e669aca6dc" name="Changes" comment="misea jour 11/04/2022">
+      <change afterPath="$PROJECT_DIR$/assets/js/editProduct.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assets/css/acme.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/css/acme.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assets/img/products/product_99.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/assets/img/products/product_99.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/js/listProduct.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/js/listProduct.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cfg/CfgApp.php" beforeDir="false" afterPath="$PROJECT_DIR$/cfg/CfgApp.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/ProductController.php" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/ProductController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/peps/core/DBAL.php" beforeDir="false" afterPath="$PROJECT_DIR$/peps/core/DBAL.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/peps/core/Entity.php" beforeDir="false" afterPath="$PROJECT_DIR$/peps/core/Entity.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/peps/core/ORMDB.php" beforeDir="false" afterPath="$PROJECT_DIR$/peps/core/ORMDB.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/peps/image/Image.php" beforeDir="false" afterPath="$PROJECT_DIR$/peps/image/Image.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/peps/image/ImageJpeg.php" beforeDir="false" afterPath="$PROJECT_DIR$/peps/image/ImageJpeg.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/peps/image/ImageJpegException.php" beforeDir="false" afterPath="$PROJECT_DIR$/peps/image/ImageJpegException.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/peps/upload/Upload.php" beforeDir="false" afterPath="$PROJECT_DIR$/peps/upload/Upload.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/editProduct.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/editProduct.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/views/listProducts.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/listProducts.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/views/showProduct.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/showProduct.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,6 +41,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -58,7 +65,7 @@
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="preferences.editor" />
+    <property name="settings.editor.selected.configurable" value="Errors" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -71,7 +78,16 @@
       <updated>1649403398234</updated>
       <workItem from="1649403401874" duration="5632000" />
       <workItem from="1649419245881" duration="5113000" />
+      <workItem from="1649747094907" duration="22276000" />
     </task>
+    <task id="LOCAL-00001" summary="misea jour 11/04/2022">
+      <created>1649675930274</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1649675930274</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -90,6 +106,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="misea jour 11/04/2022" />
+    <option name="LAST_COMMIT_MESSAGE" value="misea jour 11/04/2022" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

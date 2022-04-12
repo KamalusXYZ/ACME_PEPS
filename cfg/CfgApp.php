@@ -50,11 +50,17 @@ class CfgApp extends Cfg
         // Tableau des types MIME autorisés pour la photo. Vide si tous types autorisés.
         self::register('imgAllowedMimeTypes', ['image/jpeg']);
 
-        // Largeur du cadre de destination des images (pixels).
-        self::register('imgWidth', 450);
+        // Largeur du cadre de destination des grandes images (pixels).
+        self::register('imgBigWidth', 450);
 
-        // Hauteur du cadre de destination des images (pixels).
-        self::register('imgHeight', 450);
+        // Hauteur du cadre de destination des grandes images (pixels).
+        self::register('imgBigHeight', 450);
+
+        // Largeur du cadre de destination des petites images (pixels).
+        self::register('imgSmallWidth', 300);
+
+        // Hauteur du cadre de destination des petites images (pixels).
+        self::register('imgSmallHeight', 300);
     }
 }
 
