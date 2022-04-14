@@ -26,6 +26,7 @@ class Product extends ORMDB
      */
     public ?int $idCategory = null;
 
+
     /**
      * @var string | null Nom.
      */

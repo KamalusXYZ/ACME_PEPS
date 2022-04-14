@@ -215,7 +215,7 @@ final class DBAL
         } catch (Error) {
             throw new DBALException(DBALException::FETCH_CLASS_UNAVAILABLE);
         }
-        return $this->stmt->fetch();
+        return $this->stmt->fetch() ?: null;
     }
 
     /**

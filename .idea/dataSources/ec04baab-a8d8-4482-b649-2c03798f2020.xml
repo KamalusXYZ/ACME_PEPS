@@ -1177,70 +1177,144 @@
       <Engine>InnoDB</Engine>
       <CollationName>utf8mb4_unicode_ci</CollationName>
     </table>
-    <column id="348" parent="346" name="idCategory">
+    <table id="348" parent="324" name="session">
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_unicode_ci</CollationName>
+    </table>
+    <table id="349" parent="324" name="user">
+      <Engine>InnoDB</Engine>
+      <CollationName>utf8mb4_unicode_ci</CollationName>
+    </table>
+    <column id="350" parent="346" name="idCategory">
       <DataType>int(10) unsigned|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="349" parent="346" name="name">
+    <column id="351" parent="346" name="name">
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <key id="350" parent="346" name="PRIMARY">
+    <key id="352" parent="346" name="PRIMARY">
       <ColNames>idCategory</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="351" parent="347" name="idProduct">
+    <column id="353" parent="347" name="idProduct">
       <DataType>int(10) unsigned|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="352" parent="347" name="idCategory">
+    <column id="354" parent="347" name="idCategory">
       <DataType>int(10) unsigned|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="353" parent="347" name="name">
+    <column id="355" parent="347" name="name">
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="354" parent="347" name="ref">
+    <column id="356" parent="347" name="ref">
       <DataType>varchar(10)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="355" parent="347" name="price">
+    <column id="357" parent="347" name="price">
       <DataType>decimal(6,2 digit) unsigned|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
-    <foreign-key id="356" parent="347" name="product_ibfk_1">
+    <foreign-key id="358" parent="347" name="product_ibfk_1">
       <ColNames>idCategory</ColNames>
       <RefColNames>idCategory</RefColNames>
       <RefTableName>category</RefTableName>
     </foreign-key>
-    <index id="357" parent="347" name="ref">
+    <index id="359" parent="347" name="ref">
       <ColNames>ref</ColNames>
       <Type>btree</Type>
       <Unique>1</Unique>
     </index>
-    <index id="358" parent="347" name="idCategory">
+    <index id="360" parent="347" name="idCategory">
       <ColNames>idCategory</ColNames>
       <Type>btree</Type>
     </index>
-    <key id="359" parent="347" name="PRIMARY">
+    <key id="361" parent="347" name="PRIMARY">
       <ColNames>idProduct</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <key id="360" parent="347" name="ref">
+    <key id="362" parent="347" name="ref">
       <ColNames>ref</ColNames>
       <UnderlyingIndexName>ref</UnderlyingIndexName>
+    </key>
+    <column id="363" parent="348" name="sid">
+      <DataType>char(32)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+    </column>
+    <column id="364" parent="348" name="data">
+      <DataType>text|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+    </column>
+    <column id="365" parent="348" name="dateSession">
+      <DataType>datetime|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+    </column>
+    <index id="366" parent="348" name="dateSession">
+      <ColNames>dateSession</ColNames>
+      <Type>btree</Type>
+    </index>
+    <key id="367" parent="348" name="PRIMARY">
+      <ColNames>sid</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+    </key>
+    <column id="368" parent="349" name="idUser">
+      <DataType>int(10) unsigned|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <SequenceIdentity>null</SequenceIdentity>
+    </column>
+    <column id="369" parent="349" name="log">
+      <DataType>varchar(10)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <CollationName>utf8mb4_bin</CollationName>
+    </column>
+    <column id="370" parent="349" name="pwd">
+      <DataType>varchar(255)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <CollationName>utf8mb4_bin</CollationName>
+    </column>
+    <column id="371" parent="349" name="lastName">
+      <DataType>varchar(30)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+    </column>
+    <column id="372" parent="349" name="firstName">
+      <DataType>varchar(20)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+    </column>
+    <index id="373" parent="349" name="log">
+      <ColNames>log</ColNames>
+      <Type>btree</Type>
+      <Unique>1</Unique>
+    </index>
+    <key id="374" parent="349" name="PRIMARY">
+      <ColNames>idUser</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+    </key>
+    <key id="375" parent="349" name="log">
+      <ColNames>log</ColNames>
+      <UnderlyingIndexName>log</UnderlyingIndexName>
     </key>
   </database-model>
 </dataSource>

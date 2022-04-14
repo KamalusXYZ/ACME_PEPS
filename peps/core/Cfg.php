@@ -41,7 +41,7 @@ class Cfg
     protected static function init(): void
     {
         // Chemin du fichier JSON des routes depuis la racine de l'application.
-        self::register('ROUTES_FILE',   'cfg/routes.json');
+        self::register('ROUTES_FILE', 'cfg/routes.json');
 
         // Namespace des contrôleurs.
         self::register('CONTROLLERS_NAMESPACE', '\\controllers');
@@ -67,6 +67,36 @@ class Cfg
 
         //Instance de NumberFormatter pour formater un nombre avec 2 décimales selon la locale us.
         self::register('NF_US_2DEC', NumberFormatter::create('en-us', NumberFormatter::PATTERN_DECIMAL, '0.00'));
+
+        // Durée de vie des sessions (secondes).
+        self::register('sessionTimeout', 300); // 5 minutes
+
+        // Mode des sessions (PERSISTENT | HYBRID | ABSOLUTE).
+        self::register('sessionMode', Cfg::get('SESSION_HYBRID'));
+
+        // Option cookie_samesite des sessions (STRICT | LAX | NONE).
+        self::register('cookieSameSite', Cfg::get('COOKIE_SAMESITE_STRICT'));
+
+        // Constante du mode PERSISTENT des sessions.
+        self::register('SESSION_PERSISTENT', 'SESSION_PERSISTENT');
+
+        // Constante du mode HYBRID des sessions.
+        self::register('SESSION_HYBRID', 'SESSION_HYBRID');
+
+        // Constante du mode ABSOLUTE des sessions.
+        self::register('SESSION_ABSOLUTE', 'SESSION_ABSOLUTE');
+
+        // Constante de l'option STRICT de "cookie_samesite" des sessions.
+        self::register('COOKIE_SAMESITE_STRICT', 'STRICT');
+
+        // Constante de l'option LAX de "cookie_samesite" des sessions.
+        self::register('COOKIE_SAMESITE_LAX', 'LAX');
+
+        // Constante de l'option NONE de "cookie_samesite" des sessions.
+        self::register('COOKIE_SAMESITE_NONE', 'NONE');
+
+        // Longueur du SID.
+        self::register('SID_LENGTH', 32);
     }
 
     /**

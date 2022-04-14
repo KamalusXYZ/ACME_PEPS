@@ -5,24 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e15a41a2-c36e-4b80-8e52-f4e669aca6dc" name="Changes" comment="misea jour 11/04/2022">
-      <change afterPath="$PROJECT_DIR$/assets/js/editProduct.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/entities/User.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/peps/core/SessionDB.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/peps/core/UserLoggable.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/views/signin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/ec04baab-a8d8-4482-b649-2c03798f2020.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/ec04baab-a8d8-4482-b649-2c03798f2020.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/css/acme.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/css/acme.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assets/img/products/product_99.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/assets/img/products/product_99.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/js/listProduct.js" beforeDir="false" afterPath="$PROJECT_DIR$/assets/js/listProduct.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cfg/CfgApp.php" beforeDir="false" afterPath="$PROJECT_DIR$/cfg/CfgApp.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cfg/CfgLocal.php" beforeDir="false" afterPath="$PROJECT_DIR$/cfg/CfgLocal.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/controllers/ProductController.php" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/ProductController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/TestController.php" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/TestController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entities/Product.php" beforeDir="false" afterPath="$PROJECT_DIR$/entities/Product.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/peps/core/Cfg.php" beforeDir="false" afterPath="$PROJECT_DIR$/peps/core/Cfg.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/peps/core/DBAL.php" beforeDir="false" afterPath="$PROJECT_DIR$/peps/core/DBAL.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/peps/core/Entity.php" beforeDir="false" afterPath="$PROJECT_DIR$/peps/core/Entity.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/peps/core/ORMDB.php" beforeDir="false" afterPath="$PROJECT_DIR$/peps/core/ORMDB.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/peps/image/Image.php" beforeDir="false" afterPath="$PROJECT_DIR$/peps/image/Image.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/peps/image/ImageJpeg.php" beforeDir="false" afterPath="$PROJECT_DIR$/peps/image/ImageJpeg.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/peps/image/ImageJpegException.php" beforeDir="false" afterPath="$PROJECT_DIR$/peps/image/ImageJpegException.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/peps/upload/Upload.php" beforeDir="false" afterPath="$PROJECT_DIR$/peps/upload/Upload.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/editProduct.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/editProduct.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/listProducts.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/listProducts.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/views/showProduct.php" beforeDir="false" afterPath="$PROJECT_DIR$/views/showProduct.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,6 +62,7 @@
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="Errors" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -78,7 +76,9 @@
       <updated>1649403398234</updated>
       <workItem from="1649403401874" duration="5632000" />
       <workItem from="1649419245881" duration="5113000" />
-      <workItem from="1649747094907" duration="22276000" />
+      <workItem from="1649747094907" duration="22346000" />
+      <workItem from="1649833819782" duration="10199000" />
+      <workItem from="1649919367804" duration="22401000" />
     </task>
     <task id="LOCAL-00001" summary="misea jour 11/04/2022">
       <created>1649675930274</created>

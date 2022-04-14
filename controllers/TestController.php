@@ -31,8 +31,10 @@ final class TestController
      * @return void
      */
     public static function test(array $params):void {
-    $product = new Product(1);
-    var_dump($product->getImgPath('small'));
+
+
+        $_SESSION['k'] = $_SESSION['k'] ?? 0;
+        $_SESSION['k']++;
 
     }
 }

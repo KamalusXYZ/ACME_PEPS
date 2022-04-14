@@ -8,6 +8,9 @@ use peps\core\DBAL;
 use peps\core\Router;
 use peps\core\DBALException;
 use peps\core\AutoloadException;
+use peps\core\SessionDB;
+
+
 
 // Initialiser l'autoload (à faire EN PREMIER).
 require 'peps/core/Autoload.php';
@@ -42,6 +45,17 @@ try {
     );
 
 } catch(DBALException $e){
+    exit($e->getMessage());
+}
+
+// Initialiser la gestion des sessions (à faire APRES l'initialisation de la connexion à la DB.
+try {
+    SessionDB::init(
+        Cfg::get('sessionTimeout'),
+        Cfg::get('sessionMode'),
+        Cfg::get('sessionCookieSameSite'),
+    );
+} catch(DBALException $e) {
     exit($e->getMessage());
 }
 

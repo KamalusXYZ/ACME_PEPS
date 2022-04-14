@@ -63,7 +63,7 @@ final class ImageJpeg extends Image
 	protected function to($gdImage, string $targetPath): void
 	{
 		// Si la création du fichier depuis la ressource échoue, déclencher une exception.
-        if(!imagejpeg($gdImage, $targetPath, $this->quality))
+        if(@!imagejpeg($gdImage, $targetPath, $this->quality))
             throw new ImageJpegException(ImageJpegException::JPEG_FROM_RESOURCE_CREATION_FAILED);
 	}
 }

@@ -54,5 +54,16 @@ final class CfgLocal extends CfgApp
 
         // Jeu de caractères de la DB.
         self::register('dbCharset', 'utf8mb4');
+
+        // Durée de vie des sessions (secondes).
+        self::register('sessionTimeout', 20); // 5 minutes
+
+        // Mode des sessions (PERSISTENT | HYBRID | ABSOLUTE).
+        self::register('sessionMode', Cfg::get('SESSION_HYBRID'));
+
+        // Option cookie_samesite des sessions (STRICT | LAX | NONE).
+        self::register('sessionCookieSameSite', Cfg::get('COOKIE_SAMESITE_STRICT'));
+
+
     }
 }
